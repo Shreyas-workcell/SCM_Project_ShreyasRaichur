@@ -112,3 +112,218 @@ const questions = [
     }
 ];
 
+// Game state
+let currentQuestionIndex = 0;
+let score = 0;
+let userAnswers = [];
+let selectedAnswer = null;
+let showingFeedback = false;
+
+// DOM elements
+const welcomeScreen = document.getElementById('welcome-screen');
+const quizScreen = document.getElementById('quiz-screen');
+const resultsScreen = document.getElementById('results-screen');
+const startBtn = document.getElementById('start-btn');
+const restartBtn = document.getElementById('restart-btn');
+
+// Quiz elements
+const progressText = document.getElementById('progress-text');
+const progressPercent = document.getElementById('progress-percent');
+const progressFill = document.getElementById('progress-fill');
+const questionText = document.getElementById('question-text');
+const answersContainer = document.getElementById('answers-container');
+const explanation = document.getElementById('explanation');
+const explanationText = document.getElementById('explanation-text');
+
+// Results elements
+const scoreMessage = document.getElementById('score-message');
+const correctCount = document.getElementById('correct-count');
+const scorePercent = document.getElementById('score-percent');
+const resultsDetails = document.getElementById('results-details');
+
+// Event listeners
+startBtn.addEventListener('click', startQuiz);
+restartBtn.addEventListener('click', restartQuiz);
+
+// Initialize app
+function init() {
+    showScreen('welcome');
+}
+
+// Screen management
+function showScreen(screenName) {
+    document.querySelectorAll('.screen').forEach(screen => {
+        screen.classList.remove('active');
+    });
+
+    const targetScreen = document.getElementById(`${screenName}-screen`);
+    if (targetScreen) {
+        targetScreen.classList.add('active');
+    }
+}
+
+// Start quiz
+function startQuiz() {
+    currentQuestionIndex = 0;
+    score = 0;
+    userAnswers = [];
+    selectedAnswer = null;
+    showingFeedback = false;
+
+    showScreen('quiz');
+    displayQuestion();
+}
+
+// Display current question
+function displayQuestion() {
+    const question = questions[currentQuestionIndex];
+    const progressPercentage = ((currentQuestionIndex + 1) / questions.length) * 100;
+
+    // Update progress
+    progressText.textContent = `Question ${currentQuestionIndex + 1} of ${questions.length}`;
+    progressPercent.textContent = `${Math.round(progressPercentage)}% Complete`;
+    progressFill.style.width = `${progressPercentage}%`;
+
+    // Update question
+    questionText.textContent = question.question;
+
+    // Clear and populate answers
+    answersContainer.innerHTML = '';
+    question.answers.forEach(answer => {
+        const button = document.createElement('button');
+        button.className = 'answer-btn';
+        button.innerHTML = `<span>${answer.text}</span>`;
+        button.addEventListener('click', () => selectAnswer(answer.id));
+        answersContainer.appendChild(button);
+    });
+
+    // Hide explanation
+    explanation.classList.add('hidden');
+    selectedAnswer = null;
+    showingFeedback = false;
+}
+
+// Handle answer selection
+function selectAnswer(answerId) {
+    if (showingFeedback) return;
+
+    selectedAnswer = answerId;
+    showingFeedback = true;
+
+    const question = questions[currentQuestionIndex];
+    const selectedAnswerObj = question.answers.find(answer => answer.id === answerId);
+    const correctAnswer = question.answers.find(answer => answer.isCorrect);
+
+    // Update button styles
+    const buttons = answersContainer.querySelectorAll('.answer-btn');
+    buttons.forEach((button, index) => {
+        const answer = question.answers[index];
+        button.classList.add('disabled');
+
+        if (answer.id === selectedAnswer) {
+            if (answer.isCorrect) {
+                button.classList.add('correct');
+                button.innerHTML += '<span class="status-icon">✅</span>';
+            } else {
+                button.classList.add('incorrect');
+                button.innerHTML += '<span class="status-icon">❌</span>';
+            }
+        } else if (answer.isCorrect) {
+            button.classList.add('correct');
+            button.innerHTML += '<span class="status-icon">✅</span>';
+        }
+    });
+
+    // Show explanation
+    explanationText.textContent = question.explanation;
+    explanation.classList.remove('hidden');
+
+    // Update score and answers
+    if (selectedAnswerObj?.isCorrect) {
+        score++;
+    }
+    userAnswers.push(answerId);
+
+    // Move to next question after delay
+    setTimeout(() => {
+        if (currentQuestionIndex < questions.length - 1) {
+            currentQuestionIndex++;
+            displayQuestion();
+        } else {
+            showResults();
+        }
+    }, 2500);
+}
+
+// Show results
+function showResults() {
+    const percentage = Math.round((score / questions.length) * 100);
+
+    // Update score display
+    correctCount.textContent = score;
+    scorePercent.textContent = `${percentage}%`;
+
+    // Set score message and color
+    let message, messageClass;
+    if (percentage >= 90) {
+        message = "Terminal Master! 🚀";
+        messageClass = "excellent";
+    } else if (percentage >= 80) {
+        message = "Command Line Expert! 💻";
+        messageClass = "good";
+    } else if (percentage >= 70) {
+        message = "Good Job! 👍";
+        messageClass = "average";
+    } else if (percentage >= 60) {
+        message = "Keep Learning! 📚";
+        messageClass = "poor";
+    } else {
+        message = "Practice More! 💪";
+        messageClass = "fail";
+    }
+
+    scoreMessage.textContent = message;
+    scoreMessage.className = `score-message ${messageClass}`;
+
+    // Generate detailed results
+    resultsDetails.innerHTML = '';
+    questions.forEach((question, index) => {
+        const userAnswerId = userAnswers[index];
+        const userAnswer = question.answers.find(answer => answer.id === userAnswerId);
+        const correctAnswer = question.answers.find(answer => answer.isCorrect);
+        const isCorrect = userAnswer?.isCorrect || false;
+
+        const resultItem = document.createElement('div');
+        resultItem.className = 'result-item';
+
+        resultItem.innerHTML = `
+            <div class="result-header">
+                <div class="result-question">${index + 1}. ${question.question}</div>
+                <div class="result-status">${isCorrect ? '✅' : '❌'}</div>
+            </div>
+            <div class="result-answers">
+                <div class="user-answer ${isCorrect ? 'correct' : 'incorrect'}">
+                    Your answer: ${userAnswer?.text}
+                </div>
+                ${!isCorrect ? `<div class="correct-answer">Correct answer: ${correctAnswer?.text}</div>` : ''}
+            </div>
+            <div class="result-explanation">
+                <div class="explanation-label">Explanation:</div>
+                <div class="explanation-text">${question.explanation}</div>
+            </div>
+        `;
+
+        resultsDetails.appendChild(resultItem);
+    });
+
+    showScreen('results');
+}
+
+// Restart quiz
+function restartQuiz() {
+    showScreen('welcome');
+}
+
+// Initialize the app
+init();
+
