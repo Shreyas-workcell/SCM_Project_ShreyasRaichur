@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terminal Quiz - Test Your Command Line Knowledge</title>
+    <meta name="description" content="Interactive quiz app to test your knowledge of Git, bash, zsh, and Linux terminal commands">
+</head>
+<body>
+    <div class="app">
+        <!-- Welcome Screen -->
+        <div id="welcome-screen" class="screen active">
+            <div class="container">
+                <div class="icons">
+                    <div class="icon terminal">⚡</div>
+                    <div class="icon git">🌿</div>
+                    <div class="icon code">💻</div>
+                </div>
+
+                <h1>Terminal <span class="highlight">Quiz</span></h1>
+
+                <p class="subtitle">Test your knowledge of Git, bash, zsh, and Linux terminal commands</p>
+
+                <div class="instructions">
+                    <h2>Quiz Instructions</h2>
+                    <div class="instruction-grid">
+                        <div class="instruction-column">
+                            <div class="instruction-item">
+                                <span class="bullet green"></span>
+                                <span>10 multiple-choice questions</span>
+                            </div>
+                            <div class="instruction-item">
+                                <span class="bullet blue"></span>
+                                <span>Topics: Git, bash, zsh, Linux</span>
+                            </div>
+                        </div>
+                        <div class="instruction-column">
+                            <div class="instruction-item">
+                                <span class="bullet purple"></span>
+                                <span>No time limit</span>
+                            </div>
+                            <div class="instruction-item">
+                                <span class="bullet yellow"></span>
+                                <span>Instant feedback provided</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button id="start-btn" class="btn-primary">
+                    <span class="play-icon">▶</span>
+                    Start Quiz
+                </button>
+            </div>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div id="quiz-screen" class="screen">
+            <div class="container">
+                <div class="progress-section">
+                    <div class="progress-info">
+                        <span id="progress-text">Question 1 of 10</span>
+                        <span id="progress-percent">10% Complete</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div id="progress-fill"></div>
+                    </div>
+                </div>
+
+                <div class="quiz-container">
+                    <div class="terminal-header">
+                        <span class="terminal-icon">⚡</span>
+                        <span class="terminal-prompt">terminal-quiz:~$</span>
+                    </div>
+
+                    <h2 id="question-text"></h2>
+
+                    <div id="answers-container" class="answers"></div>
+
+                    <div id="explanation" class="explanation hidden">
+                        <h3>Explanation:</h3>
+                        <p id="explanation-text"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div id="results-screen" class="screen">
+        </div>
+    </div>
+</body>
+</html>
+
