@@ -3,25 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Terminal Quiz - Test Your Command Line Knowledge</title>
-    <meta name="description" content="Interactive quiz app to test your knowledge of Git, bash, zsh, and Linux terminal commands">
+    <title>Terminal Quiz</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="app">
         <!-- Welcome Screen -->
-        <div id="welcome-screen" class="screen active">
+        <section id="welcome-screen" class="screen active">
             <div class="container">
                 <div class="icons">
-                    <div class="icon terminal">⚡</div>
-                    <div class="icon git">🌿</div>
-                    <div class="icon code">💻</div>
+                    <span class="icon bolt">⚡</span>
+                    <span class="icon leaf">🌿</span>
+                    <span class="icon laptop">💻</span>
                 </div>
-
                 <h1>Terminal <span class="highlight">Quiz</span></h1>
-
                 <p class="subtitle">Test your knowledge of Git, bash, zsh, and Linux terminal commands</p>
-
                 <div class="instructions">
                     <h2>Quiz Instructions</h2>
                     <div class="instruction-grid">
@@ -47,16 +43,14 @@
                         </div>
                     </div>
                 </div>
-
                 <button id="start-btn" class="btn-primary">
-                    <span class="play-icon">▶</span>
-                    Start Quiz
+                    <span class="play-icon">▶</span> Start Quiz
                 </button>
             </div>
-        </div>
+        </section>
 
         <!-- Quiz Screen -->
-        <div id="quiz-screen" class="screen">
+        <section id="quiz-screen" class="screen">
             <div class="container">
                 <div class="progress-section">
                     <div class="progress-info">
@@ -64,68 +58,56 @@
                         <span id="progress-percent">10% Complete</span>
                     </div>
                     <div class="progress-bar">
-                        <div id="progress-fill"></div>
+                        <div id="progress-fill" class="progress-fill"></div>
                     </div>
                 </div>
-
                 <div class="quiz-container">
                     <div class="terminal-header">
                         <span class="terminal-icon">⚡</span>
-                        <span class="terminal-prompt">terminal-quiz:~$</span>
+                        <span>terminal-quiz:~$</span>
                     </div>
-
-                    <h2 id="question-text"></h2>
-
+                    <div id="question-text"></div>
                     <div id="answers-container" class="answers"></div>
-
                     <div id="explanation" class="explanation hidden">
                         <h3>Explanation:</h3>
                         <p id="explanation-text"></p>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
 
         <!-- Results Screen -->
-        <div id="results-screen" class="screen">
+        <section id="results-screen" class="screen">
             <div class="container">
                 <div class="results-header">
                     <div class="trophy">🏆</div>
                     <h1>Quiz Complete!</h1>
                     <p id="score-message" class="score-message"></p>
-
-                    <div class="score-stats">
-                        <div class="stat">
-                            <div id="correct-count" class="stat-number">0</div>
-                            <div class="stat-label">Correct Answers</div>
-                        </div>
-                        <div class="stat">
-                            <div id="score-percent" class="stat-number">0%</div>
-                            <div class="stat-label">Score</div>
-                        </div>
-                        <div class="stat">
-                            <div class="stat-number">10</div>
-                            <div class="stat-label">Total Questions</div>
-                        </div>
+                </div>
+                <div class="score-stats">
+                    <div class="stat">
+                        <div id="correct-count" class="stat-number">0</div>
+                        <div class="stat-label">Correct Answers</div>
+                    </div>
+                    <div class="stat">
+                        <div id="score-percent" class="stat-number">0%</div>
+                        <div class="stat-label">Score</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">10</div>
+                        <div class="stat-label">Total Questions</div>
                     </div>
                 </div>
-
                 <div class="detailed-results">
-                    <div class="terminal-header">
-                        <span class="terminal-icon">⚡</span>
-                        <span>Detailed Results</span>
-                    </div>
+                    <h2><span class="terminal-icon">⚡</span> Detailed Results</h2>
                     <div id="results-details" class="results-list"></div>
                 </div>
-
                 <button id="restart-btn" class="btn-restart">
-                    <span class="restart-icon">🔄</span>
-                    Take Quiz Again
+                    <span class="restart-icon">🔄</span> Take Quiz Again
                 </button>
             </div>
-        </div>
+        </section>
     </div>
-
     <script src="scrpt.js"></script>
 </body>
 </html>
